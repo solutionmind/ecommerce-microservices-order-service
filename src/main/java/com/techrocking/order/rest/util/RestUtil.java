@@ -27,7 +27,7 @@ public class RestUtil {
 		List<ServiceInstance> instances = discoveryClient.getInstances("customer-service");
 		String customerServiceURI = instances.get(0).getUri().toString();
 		
-		String serviceUri = String.format("%s/customerservice/api/customer/%s",customerServiceURI,customerId.toString());
+		String serviceUri = String.format("%s/v1/customers/%s",customerServiceURI,customerId.toString());
 		
 		ResponseEntity<CustomerResponsePayload> restExchange = restTemplate.exchange(serviceUri, HttpMethod.GET, null, CustomerResponsePayload.class);
 		return restExchange.getBody();
@@ -38,21 +38,21 @@ public class RestUtil {
 		List<ServiceInstance> instances = discoveryClient.getInstances("item-service");
 		String itemServiceURI = instances.get(0).getUri().toString();
 		
-		String serviceUri = String.format("%s/itemservice/api/item/%s",itemServiceURI,itemId.toString());
+		String serviceUri = String.format("%s/v1/items/%s",itemServiceURI,itemId.toString());
 		
 		ResponseEntity<GetItemResponse> restExchange = restTemplate.exchange(serviceUri, HttpMethod.GET, null, GetItemResponse.class);
 		return restExchange.getBody();
 	}
 	
 	public CustomerResponsePayload getCustomerDetailsByRibbonBackedClient(Long customerId) {
-		String serviceUri = "http://customer-service/customerservice/api/customer/{customerId}";
+		String serviceUri = "http://customer-service/v1/customers/{customerId}";
 		
 		ResponseEntity<CustomerResponsePayload> restExchange = restTemplate.exchange(serviceUri, HttpMethod.GET, null, CustomerResponsePayload.class,customerId.toString());
 		return restExchange.getBody();
 	}
 	
 	public GetItemResponse getItemDetailsByRibbonBackedClient(Long itemId) {
-		String serviceUri = "http://item-service/itemservice/api/item/{itemId}";
+		String serviceUri = "http://item-service/v1/items/{itemId}";
 		
 		ResponseEntity<GetItemResponse> restExchange = restTemplate.exchange(serviceUri, HttpMethod.GET, null, GetItemResponse.class,itemId.toString());
 		return restExchange.getBody();

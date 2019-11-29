@@ -4,15 +4,12 @@ import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.techrocking.order.data.converter.OrderDataConverter;
 import com.techrocking.order.entity.Order;
@@ -23,7 +20,6 @@ import com.techrocking.order.service.OrderService;
 
 @RestController
 @EnableDiscoveryClient
-@RequestMapping("/order")
 public class OrderController {
 	
 	@Autowired
