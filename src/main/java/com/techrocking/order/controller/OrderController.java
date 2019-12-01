@@ -2,6 +2,10 @@ package com.techrocking.order.controller;
 
 import java.util.Arrays;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -22,6 +26,8 @@ import com.techrocking.order.service.OrderService;
 @EnableDiscoveryClient
 public class OrderController {
 	
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+	
 	@Autowired
 	private OrderService service;
 	
@@ -31,19 +37,25 @@ public class OrderController {
 	@Value("${order.service.message}")
 	private String message;
 	
+	@Autowired
+	private HttpServletRequest requestContext ;
+	
 	@GetMapping
 	public GetOrderResponse getOrder() {
+		logger.info("service call started for transaction id : " + requestContext.getHeader("trx-id"));
 		return converter.convert(service.getOrder());
 	}
 	
 	@GetMapping("{id}")
 	public GetOrderResponse getOrder(@PathVariable(value = "id") Long orderId) {
+		logger.info("service call started for transaction id : " + requestContext.getHeader("trx-id"));
 		Order order = service.getOrder(orderId);
 		return converter.convert(Arrays.asList(order));
 	}
 	
 	@PostMapping()
 	public CreateOrderResponse createOrder(@RequestBody CreateOrderRequest request) {
+		logger.info("service call started for transaction id : " + requestContext.getHeader("trx-id"));
 		Order order = service.createOrder(request);
 		CreateOrderResponse response = new CreateOrderResponse();
 		response.setMessage("order created successfully");
